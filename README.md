@@ -25,7 +25,7 @@ A full-stack task management application built with React (frontend) and Node.js
 
 1. Clone the repository
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/YasserSoltan/Task-management
 cd "Task Management App"
 ```
 
