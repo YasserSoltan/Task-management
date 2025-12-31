@@ -1,16 +1,17 @@
+process.env.JWT_SECRET = process.env.JWT_SECRET;
+
 const request = require('supertest');
 const app = require('../app');
 const db = require('../db');
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'supersecret';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 describe('Tasks API', () => {
   let authToken;
   let userId;
 
   beforeEach(async () => {
-    // Clear tables
     db.prepare('DELETE FROM tasks').run();
     db.prepare('DELETE FROM users').run();
 
@@ -20,7 +21,6 @@ describe('Tasks API', () => {
       .run('Test User', 'test@example.com', hashedPassword);
     userId = result.lastInsertRowid;
 
-    // Generate token
     authToken = jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: '1d' });
   });
 
@@ -30,7 +30,6 @@ describe('Tasks API', () => {
 
   describe('GET /api/tasks', () => {
     it('should get all tasks for authenticated user', async () => {
-      // Create a task
       db.prepare('INSERT INTO tasks (title, description, user_id) VALUES (?, ?, ?)')
         .run('Test Task', 'Test Description', userId);
 
@@ -116,7 +115,6 @@ describe('Tasks API', () => {
 
   describe('DELETE /api/tasks/:id', () => {
     it('should delete a task', async () => {
-      // Create a task
       const taskResult = db.prepare('INSERT INTO tasks (title, user_id) VALUES (?, ?)')
         .run('Task to Delete', userId);
       const taskId = taskResult.lastInsertRowid;

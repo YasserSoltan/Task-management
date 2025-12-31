@@ -4,7 +4,7 @@ const db = require('../db');
 
 describe('Authentication API', () => {
   beforeEach(() => {
-    // Clear users table before each test
+
     db.prepare('DELETE FROM users').run();
   });
 
@@ -38,7 +38,6 @@ describe('Authentication API', () => {
     });
 
     it('should return 400 if email already exists', async () => {
-      // Register first user
       await request(app)
         .post('/api/auth/register')
         .send({
@@ -62,7 +61,6 @@ describe('Authentication API', () => {
 
   describe('POST /api/auth/login', () => {
     beforeEach(async () => {
-      // Register a user for login tests
       await request(app)
         .post('/api/auth/register')
         .send({

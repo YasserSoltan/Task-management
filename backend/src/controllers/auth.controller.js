@@ -1,11 +1,16 @@
 const db = require('../db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET || 'supersecret'; // Use environment variable in production
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecret';
 
 exports.register = (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) return res.status(400).json({ message: 'All fields required' });
+
+  const existingUser = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+  if (existingUser) {
+    return res.status(400).json({ message: 'Email already exists' });
+  }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -14,7 +19,7 @@ exports.register = (req, res) => {
       .run(name, email, hashedPassword);
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
-    res.status(400).json({ message: 'Email already exists' });
+    res.status(500).json({ message: 'Registration failed' });
   }
 };
 

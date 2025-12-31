@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import api from "../api/axios";
+import { taskService } from "../services/taskService";
 import TaskList from "../components/TaskList";
 import TaskInput from "../components/TaskInput";
 
@@ -17,9 +17,8 @@ const Tasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const { data } = await api.get("/tasks");
-      setTasks(Array.isArray(data) ? data : data.tasks || []);
-      console.log(data)
+      const tasks = await taskService.getTasks();
+      setTasks(tasks);
     } catch (err) {
       console.error("Failed to fetch tasks:", err.response?.data || err.message);
       if (err.response?.status === 401) {
@@ -35,15 +34,8 @@ const Tasks = () => {
 
   const handleAddTask = async (taskData) => {
     try {
-      const title = typeof taskData === 'string' ? taskData : taskData.title;
-      const description = typeof taskData === 'object' ? taskData.description : null;
-      
-      const { data } = await api.post("/tasks", {
-        title,
-        description: description || null,
-      });
-
-      setTasks((prev) => [...prev, data.task || data]);
+      const newTask = await taskService.createTask(taskData);
+      setTasks((prev) => [...prev, newTask]);
       toast.success("Task added successfully!");
     } catch (err) {
       console.error("Failed to add task:", err.response?.data || err.message);
@@ -53,8 +45,8 @@ const Tasks = () => {
 
   const handleUpdateTask = async (taskId, updates) => {
     try {
-      const { data } = await api.put(`/tasks/${taskId}`, updates);
-      setTasks((prev) => prev.map((t) => (t.id === taskId ? (data.task || data) : t)));
+      const updatedTask = await taskService.updateTask(taskId, updates);
+      setTasks((prev) => prev.map((t) => (t.id === taskId ? updatedTask : t)));
       toast.success("Task updated successfully!");
     } catch (err) {
       console.error("Failed to update task:", err.response?.data || err.message);
@@ -64,7 +56,7 @@ const Tasks = () => {
 
   const handleDeleteTask = async (taskId) => {
     try {
-      await api.delete(`/tasks/${taskId}`);
+      await taskService.deleteTask(taskId);
       setTasks((prev) => prev.filter((t) => t.id !== taskId));
       toast.success("Task deleted successfully!");
     } catch (err) {
@@ -75,7 +67,6 @@ const Tasks = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("username");
     toast.success("Logged out successfully!");
     navigate("/login");
   };
@@ -90,7 +81,7 @@ const Tasks = () => {
 
   return (
     <div className="min-h-screen w-screen bg-gradient-to-br from-green-50 to-blue-50">
-      <div className="max-w-6xl mx-auto p-4 sm:p-6">
+      <div className="max-w-7xl mx-auto p-4 sm:p-6">
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
           <div className="flex justify-between items-center">

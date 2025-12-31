@@ -2,7 +2,7 @@
 
 A full-stack task management application built with React (frontend) and Node.js/Express (backend).
 
-## 🚀 Features
+##  Features
 
 - User authentication (Register & Login)
 - Create, read, update, and delete tasks
@@ -11,17 +11,17 @@ A full-stack task management application built with React (frontend) and Node.js
 - Protected routes
 - Responsive UI with Tailwind CSS
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 **Backend:** Node.js, Express, SQLite, JWT, bcryptjs  
 **Frontend:** React, Vite, React Router, Axios, Tailwind CSS
 
-## 📋 Prerequisites
+##  Prerequisites
 
 - Node.js (v16 or higher)
 - npm
 
-## 🔧 Installation
+##  Installation
 
 1. Clone the repository
 ```bash
@@ -41,7 +41,7 @@ cd ../frontend
 npm install
 ```
 
-## ⚙️ Configuration
+##  Configuration
 
 Create `.env` files for local development:
 
@@ -58,7 +58,7 @@ FRONTEND_URL=http://localhost:5173
 VITE_API_URL=http://localhost:5000/api
 ```
 
-## 🚀 Running the Application
+##  Running the Application
 
 **Start Backend:**
 ```bash
@@ -74,7 +74,7 @@ npm run dev
 ```
 Frontend runs on `http://localhost:5173`
 
-## 📝 API Endpoints
+##  API Endpoints
 
 ### Authentication
 - `POST /api/auth/register` - Register new user
@@ -87,7 +87,7 @@ Frontend runs on `http://localhost:5173`
 - `DELETE /api/tasks/:id` - Delete task
 
 
-## 🗄️ Database
+##  Database
 
 SQLite database is created automatically on first run in `backend/database.sqlite`
 
@@ -95,7 +95,7 @@ SQLite database is created automatically on first run in `backend/database.sqlit
 - **Users:** id, name, email, password (hashed)
 - **Tasks:** id, title, description, status, user_id, created_at
 
-## 🧪 Testing
+##  Testing
 
 Run backend tests:
 ```bash
@@ -103,7 +103,7 @@ cd backend
 npm test
 ```
 
-## 📋 Assumptions
+##  Assumptions
 
 1. JWT tokens expire after 24 hours
 2. Tasks default to "pending" status

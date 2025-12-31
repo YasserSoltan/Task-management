@@ -1,7 +1,8 @@
 import { useState } from "react";
-import api from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { authService } from "../services/authService";
+import Input from "../components/Input";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -14,10 +15,8 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await api.post("/auth/login", formData);
-      const data = response.data;
+      const data = await authService.login(formData);
       localStorage.setItem("token", data.token);
-      localStorage.setItem("name", data.name);
       toast.success("Login successful!");
       setTimeout(() => {
         navigate("/tasks");
@@ -52,14 +51,13 @@ const Login = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
               Email
             </label>
-            <input
+            <Input
               type="text"
               value={formData.email}
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-2 focus:ring-blue-500"
               disabled={loading}
             />
           </div>
@@ -68,14 +66,13 @@ const Login = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
               Password
             </label>
-            <input
+            <Input
               type="password"
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
-              onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-2 focus:ring-blue-500"
               disabled={loading}
             />
           </div>

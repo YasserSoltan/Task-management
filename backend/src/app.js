@@ -4,8 +4,7 @@ const authRoutes = require("./routes/auth.routes");
 const taskRoutes = require("./routes/task.routes");
 const errorMiddleware = require("./middlewares/error.middleware");
 
-const env = process.env.NODE_ENV || "development";
-require("dotenv").config({ path: `.env.${env}` });
+require("dotenv").config();
 
 const app = express();
 

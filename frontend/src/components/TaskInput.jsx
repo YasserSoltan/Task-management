@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Plus, X } from "lucide-react";
+import Input from "./Input";
+import toast from "react-hot-toast";
 
 const TaskInput = ({ onAdd }) => {
   const [taskTitle, setTaskTitle] = useState("");
@@ -16,6 +18,8 @@ const TaskInput = ({ onAdd }) => {
       setTaskTitle("");
       setDescription("");
       setShowDetails(false);
+    }else{
+      toast.error("Task title is required");
     }
   };
 
@@ -29,13 +33,12 @@ const TaskInput = ({ onAdd }) => {
       <div className="space-y-4">
         {/* Title Input */}
         <div className="flex gap-2">
-          <input
+          <Input
             type="text"
             value={taskTitle}
             onChange={(e) => setTaskTitle(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && !showDetails && handleAdd(e)}
             placeholder="Add a new task..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+            className="flex-1 px-4 py-2 focus:ring-green-500"
           />
           {!showDetails && (
             <button
@@ -54,7 +57,6 @@ const TaskInput = ({ onAdd }) => {
           </button>
         </div>
 
-        {/* Extended Details */}
         {showDetails && (
           <div className="space-y-3 pt-2 border-t border-gray-200">
             <div className="flex justify-between items-center">
@@ -67,17 +69,17 @@ const TaskInput = ({ onAdd }) => {
               </button>
             </div>
 
-            {/* Description */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Description (optional)
               </label>
-              <textarea
+              <Input
+                type="textarea"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Add more details about the task..."
                 rows="3"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none resize-none"
+                className="w-full px-4 py-2 focus:ring-green-500 resize-none"
               />
             </div>
           </div>

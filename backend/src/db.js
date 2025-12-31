@@ -1,18 +1,6 @@
 const Database = require('better-sqlite3');
-const path = require('path');
-const fs = require('fs');
 
-// For Vercel: use /tmp directory (writable) or local database.sqlite for development
-const isVercel = process.env.VERCEL === '1';
-const dbPath = isVercel 
-  ? path.join('/tmp', 'database.sqlite')
-  : path.join(__dirname, '..', 'database.sqlite');
-
-if (isVercel && !fs.existsSync('/tmp')) {
-  fs.mkdirSync('/tmp', { recursive: true });
-}
-
-const db = new Database(dbPath);
+const db = new Database('database.sqlite');
 
 db.exec(`
   PRAGMA foreign_keys = ON;
